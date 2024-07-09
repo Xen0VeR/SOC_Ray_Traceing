@@ -63,6 +63,21 @@ public:
     double length_squared() const {
         return v[0]*v[0] + v[1]*v[1] + v[2]*v[2];
     }
+
+    bool near_zero() const {
+        // Return true if  vector is close to 0 in all Dim.
+        auto s = 1e-8;
+        return (fabs(v[0]) < s) && (fabs(v[1]) < s) && (fabs(v[2]) < s);
+    }
+
+
+    static vec3 random() {
+        return vec3(random_double(), random_double(), random_double());
+    }
+
+    static vec3 random(double min, double max) {
+        return vec3(random_double(min, max), random_double(min, max), random_double(min, max));
+    }
 };
 
 using point3 = vec3;
@@ -87,6 +102,10 @@ inline vec3 operator*(const vec3& e, double t) {
     return vec3(e.v[0] * t, e.v[1] * t, e.v[2] * t);
 }
 
+inline vec3 operator*(const vec3& v1, const vec3& v2) {
+    return vec3(v1.x() * v2.x(), v1.y() * v2.y(), v1.z() * v2.z());
+}
+
 inline vec3 operator/(const vec3& e, double t) {
     return vec3(e.v[0] / t, e.v[1] / t, e.v[2] / t);
 }
@@ -105,6 +124,34 @@ inline vec3 cross(const vec3& u, const vec3& e) {
 
 inline vec3 unit_vector(const vec3& e) {
     return e / e.length();
+}
+
+inline vec3 random_in_unit_sphere() {
+    while (true)
+    {
+        auto p = vec3::random(-1,1);
+        if (p.length_squared()<1){
+            return p;
+        }
+    }
+}
+
+inline vec3 random_unit_vector() {
+    return unit_vector(random_in_unit_sphere());
+}
+
+inline vec3 random_on_hemisphere(const vec3& normal) {
+    vec3 on_unit_sphere = random_unit_vector();
+    if (dot(on_unit_sphere, normal) > 0.0) {
+        return on_unit_sphere;
+    }
+    else{
+        return -on_unit_sphere;
+    }
+}
+
+inline vec3 reflect(const vec3& n, const vec3& v){
+    return v - 2*dot(v,n)*n;
 }
 
 #endif
