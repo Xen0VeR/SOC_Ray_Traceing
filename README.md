@@ -1,4 +1,4 @@
-### Raytracer Project
+# Raytracer Project
 # Overview
 This project is a Raytracer developed during the Summer of Code. The goal was to create a minimal yet functional raytracing engine that simulates realistic lighting, shadows, reflections, and refractions to render high-quality 3D images. The project demonstrates the fundamental principles of raytracing, including light interaction with surfaces and objects.
 
